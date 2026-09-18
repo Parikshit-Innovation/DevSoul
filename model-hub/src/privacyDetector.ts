@@ -47,7 +47,7 @@ export class PrivacyDetector {
     },
     {
       name: 'GENERIC_ASSIGNMENT_SECRET',
-      regex: /(?:[A-Za-z0-9_]*(?:password|passwd|secret|api_?key|auth_?token|client_?secret|private_?key)[A-Za-z0-9_]*)\s*[:=]\s*(?:["']([^"'\r\n]{6,})["']|([A-Za-z0-9_\-!@#$%^&*+=]{8,}))/i,
+      regex: /(?:\b[A-Za-z0-9_]*(?:password|passwd|secret|api_?key|auth_?token|client_?secret|private_?key)[A-Za-z0-9_]*\b)\s*[:=]\s*(?:["']([^"'\r\n]{6,})["']|([A-Za-z0-9_\-!@#$%^&*+=]{8,}))(?!\s*[\.\(])/i,
       description: 'Explicit credential assignment (password/secret/token/apiKey)',
     },
     {

@@ -162,7 +162,8 @@ export class ProviderAdapter {
   public async executeChat(
     model: ModelEntry,
     messages: ChatMessage[],
-    timeoutMs?: number
+    timeoutMs?: number,
+    signal?: AbortSignal
   ): Promise<ProviderResponse> {
     const isCloud = model.location === 'cloud';
     const effectiveTimeout = timeoutMs ?? (isCloud ? this.cloudTimeoutMs : this.localTimeoutMs);
@@ -194,6 +195,10 @@ export class ProviderAdapter {
     const startTime = SystemContext.nowMs();
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), effectiveTimeout);
+    if (signal) {
+      if (signal.aborted) controller.abort();
+      else signal.addEventListener('abort', () => controller.abort(), { once: true });
+    }
 
     try {
       const response = await this.customFetch(endpointUrl, {
@@ -241,6 +246,9 @@ export class ProviderAdapter {
       clearTimeout(timer);
       const latencyMs = SystemContext.nowMs() - startTime;
       if (err.name === 'AbortError') {
+        if (signal?.aborted) {
+          throw new Error(`Request to model '${model.id}' aborted by client`);
+        }
         throw new Error(
           `Request to model '${model.id}' timed out after ${effectiveTimeout}ms`
         );
@@ -255,7 +263,8 @@ export class ProviderAdapter {
   public async *executeChatStream(
     model: ModelEntry,
     messages: ChatMessage[],
-    timeoutMs?: number
+    timeoutMs?: number,
+    signal?: AbortSignal
   ): AsyncGenerator<string, { usage?: TokenUsage; latencyMs: number }, void> {
     const isCloud = model.location === 'cloud';
     const effectiveTimeout = timeoutMs ?? (isCloud ? this.cloudTimeoutMs : this.localTimeoutMs);
@@ -287,6 +296,10 @@ export class ProviderAdapter {
     const startTime = SystemContext.nowMs();
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), effectiveTimeout);
+    if (signal) {
+      if (signal.aborted) controller.abort();
+      else signal.addEventListener('abort', () => controller.abort(), { once: true });
+    }
 
     let response: Response;
     try {
@@ -299,6 +312,9 @@ export class ProviderAdapter {
       clearTimeout(timer);
     } catch (err: any) {
       clearTimeout(timer);
+      if (err.name === 'AbortError' && signal?.aborted) {
+        throw new Error(`Streaming request to model '${model.id}' aborted by client`);
+      }
       throw err;
     }
 
