@@ -1,0 +1,4 @@
+keywords: []
+
+# Generic fallback — only base nodes apply (users, auth, scale, deployment, data_model)
+nodes: {}

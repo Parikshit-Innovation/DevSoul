@@ -1,0 +1,44 @@
+keywords:
+  - saas
+  - subscription
+  - multi-tenant
+  - tenant
+  - billing
+  - workspace
+  - organization
+  - b2b
+
+# SaaS specific nodes (base.yaml owns: users, auth, scale, deployment, data_model)
+nodes:
+  multi_tenancy:
+    weight: 8
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Shared database with tenant_id isolation"
+      - "Separate database per tenant"
+      - "Row-level security (PostgreSQL RLS)"
+      - "Single-tenant per deployment"
+    question: "What multi-tenant isolation model will be used?"
+
+  subscription_tier:
+    weight: 7
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Free + Paid tiers (Stripe billing)"
+      - "Usage-based metered billing"
+      - "Fixed flat monthly subscription"
+      - "Free beta / invite only"
+    question: "What billing and subscription structure is expected?"
+
+  organization_roles:
+    weight: 6
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Owner, Admin, and Member roles"
+      - "Custom role-based permissions (RBAC)"
+      - "Simple User and Admin"
+      - "Team-level permissions"
+    question: "How will tenant team permissions be managed?"
