@@ -200,48 +200,61 @@ export class ProviderAdapter {
       else signal.addEventListener('abort', () => controller.abort(), { once: true });
     }
 
+    const maxRetries = 2;
+    let attempt = 0;
+
     try {
-      const response = await this.customFetch(endpointUrl, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(payload),
-        signal: controller.signal,
-      });
-      clearTimeout(timer);
+      while (true) {
+        const response = await this.customFetch(endpointUrl, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
 
-      const latencyMs = SystemContext.nowMs() - startTime;
+        // Bounded exponential backoff exclusively for HTTP 429 (Too Many Requests / Rate Limit)
+        if (response.status === 429 && attempt < maxRetries && !controller.signal.aborted) {
+          attempt++;
+          const backoffMs = Math.min(50 * Math.pow(2, attempt), 500);
+          await new Promise((r) => setTimeout(r, backoffMs));
+          continue;
+        }
 
-      if (!response.ok) {
-        let errBody: string = '';
-        try {
-          errBody = await response.text();
-        } catch {}
+        clearTimeout(timer);
+        const latencyMs = SystemContext.nowMs() - startTime;
 
-        const cleanHeaders = redactAuthHeader(headers);
-        throw new Error(
-          `Provider ${model.provider} request to ${endpointUrl} failed with HTTP ${response.status} (${response.statusText}): ${errBody}`
-        );
+        if (!response.ok) {
+          let errBody: string = '';
+          try {
+            errBody = await response.text();
+          } catch {}
+
+          const cleanHeaders = redactAuthHeader(headers);
+          throw new Error(
+            `Provider ${model.provider} request to ${endpointUrl} failed with HTTP ${response.status} (${response.statusText}): ${errBody}`
+          );
+        }
+
+        const data: any = await response.json();
+        const content =
+          data?.choices?.[0]?.message?.content ??
+          data?.choices?.[0]?.text ??
+          '';
+
+        const usage: TokenUsage | undefined = data?.usage
+          ? {
+              promptTokens: data.usage.prompt_tokens || 0,
+              completionTokens: data.usage.completion_tokens || 0,
+              totalTokens: data.usage.total_tokens || 0,
+            }
+          : undefined;
+
+        return {
+          content,
+          usage,
+          latencyMs,
+        };
       }
-
-      const data: any = await response.json();
-      const content =
-        data?.choices?.[0]?.message?.content ??
-        data?.choices?.[0]?.text ??
-        '';
-
-      const usage: TokenUsage | undefined = data?.usage
-        ? {
-            promptTokens: data.usage.prompt_tokens || 0,
-            completionTokens: data.usage.completion_tokens || 0,
-            totalTokens: data.usage.total_tokens || 0,
-          }
-        : undefined;
-
-      return {
-        content,
-        usage,
-        latencyMs,
-      };
     } catch (err: any) {
       clearTimeout(timer);
       const latencyMs = SystemContext.nowMs() - startTime;
