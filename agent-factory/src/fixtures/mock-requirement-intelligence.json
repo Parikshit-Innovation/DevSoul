@@ -1,0 +1,43 @@
+{
+  "project_id": "devos-demo",
+  "project_name": "Campus Event Management",
+  "summary": "A web application for students to discover campus events and register.",
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "description": "Students can view upcoming events.",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Display event title, date, venue, and description.",
+        "Events are sorted by date ascending.",
+        "Students can filter events by category."
+      ]
+    },
+    {
+      "id": "REQ-002",
+      "description": "Students can register for an event.",
+      "priority": "high",
+      "acceptance_criteria": [
+        "A student can register for an available event.",
+        "The system prevents duplicate registrations.",
+        "A confirmation is shown after successful registration."
+      ]
+    },
+    {
+      "id": "REQ-003",
+      "description": "Organizers can create and manage events.",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Authorized organizers can create and update events.",
+        "Organizers can view registration lists for their events."
+      ]
+    }
+  ],
+  "constraints": {
+    "max_agents": 5,
+    "max_planning_tokens": 3000,
+    "max_agent_steps": 8,
+    "allowed_tools": ["read_file"],
+    "project_root": "."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "project_id": "devos-demo",
+  "architecture_summary": "A web application with a React frontend and a Node.js API backed by PostgreSQL.",
+  "technology_stack": {
+    "frontend": "React",
+    "backend": "Node.js",
+    "database": "PostgreSQL"
+  },
+  "components": [
+    {
+      "name": "frontend",
+      "description": "Student-facing event browsing and registration UI built with React."
+    },
+    {
+      "name": "backend",
+      "description": "REST API for events, registrations, and organizer operations built with Node.js."
+    },
+    {
+      "name": "database",
+      "description": "PostgreSQL database storing users, events, and registrations."
+    }
+  ],
+  "design_constraints": [
+    "Prevent duplicate event registrations at the database level.",
+    "Only authorized organizers can create or modify events.",
+    "API responses must be paginated for large event lists."
+  ],
+  "project_files": [
+    "src/frontend/",
+    "src/backend/",
+    "database/",
+    "docs/"
+  ]
+}
