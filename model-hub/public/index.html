@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevOS Model Hub & Router</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #111827;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --bg-card-hover: rgba(31, 41, 55, 0.8);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: #6366f1;
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --accent-cyan: #06b6d4;
+      --accent-indigo: #6366f1;
+      --accent-purple: #a855f7;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-amber: #f59e0b;
+      --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      line-height: 1.5;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.15), transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.1), transparent 45%);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-cyan));
+      color: white;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(to right, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    button {
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-indigo);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Main Grid Layout */
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Models Table */
+    .models-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .model-row {
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .model-row:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    .model-info-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .model-name {
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .model-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      gap: 12px;
+      font-family: var(--font-mono);
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-cloud {
+      background: rgba(99, 102, 241, 0.2);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.4);
+    }
+
+    .badge-local {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .badge-status-green {
+      color: var(--accent-emerald);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+    }
+
+    .badge-status-red {
+      color: var(--accent-rose);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .status-dot.green { background-color: var(--accent-emerald); box-shadow: 0 0 8px var(--accent-emerald); }
+    .status-dot.red { background-color: var(--accent-rose); box-shadow: 0 0 8px var(--accent-rose); }
+
+    .model-hint {
+      font-size: 11px;
+      color: var(--accent-amber);
+      font-family: var(--font-mono);
+      margin-top: 2px;
+    }
+
+    /* Task Form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+    }
+
+    textarea, input[type="text"], select {
+      width: 100%;
+      background: rgba(11, 15, 25, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    textarea:focus, input[type="text"]:focus, select:focus {
+      border-color: var(--border-focus);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+      font-family: var(--font-mono);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    .checkbox-group input {
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent-rose);
+    }
+
+    .warning-box {
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: #fda4af;
+      display: none;
+    }
+
+    /* Decision Panel */
+    .decision-panel {
+      background: rgba(11, 15, 25, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .decision-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .chosen-model-badge {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+    }
+
+    .reasons-list {
+      list-style: none;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .reasons-list li {
+      padding-left: 12px;
+      position: relative;
+    }
+
+    .reasons-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent-indigo);
+    }
+
+    /* Result Box */
+    .result-box {
+      margin-top: 16px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      white-space: pre-wrap;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Recent Decisions */
+    .decision-item {
+      padding: 10px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .decision-item:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-area">
+        <span class="logo-badge">DEVOS</span>
+        <div>
+          <h1>Model Hub & Intelligent Router</h1>
+          <div class="subtitle">Unified Cloud (OpenRouter) & Local (Ollama) Routing Control Plane</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-secondary" id="btnRefresh" onclick="refreshModels()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          Refresh Models
+        </button>
+      </div>
+    </header>
+
+    <div class="grid-layout">
+      <!-- Left Column: Available Models -->
+      <div class="card">
+        <div class="card-title">
+          <span>Available Models Catalogue</span>
+          <span style="font-size: 12px; color: var(--text-muted);" id="modelsCount">Loading...</span>
+        </div>
+        <div class="models-grid" id="modelsList">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Right Column: Task Testing & Live Router Preview -->
+      <div class="card">
+        <div class="card-title">
+          <span>Test Model Router</span>
+          <span class="badge badge-cloud" id="liveModeBadge">LIVE ROUTING</span>
+        </div>
+
+        <div class="form-group">
+          <label for="promptInput">Task Prompt / Instruction</label>
+          <textarea id="promptInput" placeholder="Enter code snippet, question, or task instruction...">Design an event-driven microservices architecture for real-time payments with high scalability.</textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label for="categorySelect">Task Category</label>
+            <select id="categorySelect">
+              <option value="">Auto-Detect (Keyword Heuristics)</option>
+              <option value="architecture">Architecture & System Design</option>
+              <option value="refactor_simple">Simple Refactoring</option>
+              <option value="boilerplate">Boilerplate / CRUD</option>
+              <option value="documentation">Documentation</option>
+              <option value="debugging">Debugging & Fixes</option>
+              <option value="code_review">Code Review</option>
+              <option value="test_generation">Test Generation</option>
+              <option value="general">General</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="overrideSelect">Manual Model Override</label>
+            <select id="overrideSelect">
+              <option value="">None (Let Router Decide)</option>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="filePathsInput">Target File Paths (comma separated)</label>
+          <input type="text" id="filePathsInput" placeholder="e.g. src/app.ts, .env, secrets/api.key" />
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="privateCheckbox" />
+          <label for="privateCheckbox" style="margin: 0; cursor: pointer; color: var(--text-primary);">
+            🔒 Mark as Private / Sensitive Source Code (Enforces Local Models)
+          </label>
+        </div>
+
+        <div class="warning-box" id="warningBox">
+          <strong>⚠️ PRIVACY OVERRIDE WARNING:</strong> You have selected a <em>Cloud Model</em> for a task flagged as <em>Private</em>. Cloud providers may process sensitive code.
+          <div style="margin-top: 8px;">
+            <label style="cursor: pointer; color: #fff; font-weight: bold;">
+              <input type="checkbox" id="confirmPrivateCheckbox" style="margin-right: 6px;" />
+              I explicitly authorize transmitting this private task to the cloud.
+            </label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button class="btn-secondary" onclick="previewRoute()" style="flex: 1;">
+            Preview Route (Dry Run)
+          </button>
+          <button class="btn-primary" id="btnExecute" onclick="executeChat()" style="flex: 1;">
+            Execute with Routed Model
+          </button>
+        </div>
+
+        <!-- Live Routing Decision Panel -->
+        <div class="decision-panel" id="decisionPanel" style="display: none;">
+          <div class="decision-header">
+            <div>
+              <span style="font-size: 12px; color: var(--text-secondary);">Routed Model:</span>
+              <div class="chosen-model-badge" id="decisionModel">-</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge" id="decisionPrivacyBadge">PUBLIC</span>
+              <span class="badge" id="decisionCategoryBadge">GENERAL</span>
+            </div>
+          </div>
+          <div style="font-size: 12px; font-weight: 600; margin-bottom: 6px;">Why this model? (Ordered Decision Trail):</div>
+          <ul class="reasons-list" id="reasonsList">
+            <!-- Populated -->
+          </ul>
+          <div style="margin-top: 10px; font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
+            Privacy-safe Fallbacks: <span id="fallbacksList" style="color: var(--text-secondary);">None</span>
+          </div>
+        </div>
+
+        <!-- Result Box -->
+        <div class="result-box" id="resultBox" style="display: none;"></div>
+        <div class="stats-bar" id="statsBar" style="display: none;">
+          <span>Latency: <strong id="statLatency">-</strong></span>
+          <span>Tokens: <strong id="statTokens">-</strong></span>
+          <span>Est. Cost: <strong id="statCost">-</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Decisions Table -->
+    <div class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Routing Decisions & Audits</div>
+      <div id="recentDecisionsList" style="color: var(--text-muted); font-size: 13px;">
+        No recent decisions recorded yet.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let modelsData = [];
+
+    async function loadModels() {
+      try {
+        const res = await fetch('/api/models');
+        modelsData = await res.json();
+        renderModelsList(modelsData);
+        populateOverrideDropdown(modelsData);
+        previewRoute();
+      } catch (err) {
+        console.error('Failed to load models:', err);
+      }
+    }
+
+    function renderModelsList(models) {
+      const container = document.getElementById('modelsList');
+      const countEl = document.getElementById('modelsCount');
+      countEl.textContent = `${models.length} configured models`;
+
+      container.innerHTML = models.map(m => {
+        const isAvail = m.available;
+        const statusDot = `<div class="status-dot ${isAvail ? 'green' : 'red'}"></div>`;
+        const badgeLoc = m.location === 'cloud' ? 'badge-cloud' : 'badge-local';
+        const costText = m.costPer1MInputUsd !== null && m.costPer1MInputUsd !== undefined
+          ? `$${m.costPer1MInputUsd}/$${m.costPer1MOutputUsd} per 1M`
+          : 'Free (Local)';
+
+        return `
+          <div class="model-row">
+            <div class="model-info-left">
+              <div class="model-name">
+                ${statusDot}
+                <span>${m.displayName}</span>
+                <span class="badge ${badgeLoc}">${m.location}</span>
+                <span style="font-size: 11px; color: var(--text-muted);">(${m.provider})</span>
+              </div>
+              <div class="model-meta">
+                <span>Latency: ${m.latencyTier}</span>
+                <span>Cost: ${costText}</span>
+                <span>Context: ${(m.contextWindow || 0).toLocaleString()} tokens</span>
+              </div>
+              ${!isAvail ? `<div class="model-hint">⚠️ ${m.reason || 'Unavailable'}</div>` : ''}
+            </div>
+            <div>
+              <span class="${isAvail ? 'badge-status-green' : 'badge-status-red'}">
+                ${isAvail ? 'READY' : 'OFFLINE'}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function populateOverrideDropdown(models) {
+      const select = document.getElementById('overrideSelect');
+      const current = select.value;
+      select.innerHTML = '<option value="">None (Let Router Decide)</option>';
+
+      models.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m.id;
+        opt.textContent = `${m.displayName} [${m.location.toUpperCase()}]${!m.available ? ' (UNAVAILABLE)' : ''}`;
+        if (!m.available) {
+          opt.disabled = true;
+        }
+        select.appendChild(opt);
+      });
+
+      if (current) select.value = current;
+    }
+
+    function checkOverrideWarning() {
+      const overrideId = document.getElementById('overrideSelect').value;
+      const isPrivate = document.getElementById('privateCheckbox').checked;
+      const warningBox = document.getElementById('warningBox');
+
+      if (overrideId && isPrivate) {
+        const model = modelsData.find(m => m.id === overrideId);
+        if (model && model.location === 'cloud') {
+          warningBox.style.display = 'block';
+          return;
+        }
+      }
+      warningBox.style.display = 'none';
+    }
+
+    document.getElementById('overrideSelect').addEventListener('change', () => {
+      checkOverrideWarning();
+      previewRoute();
+    });
+
+    document.getElementById('privateCheckbox').addEventListener('change', () => {
+      checkOverrideWarning();
+      previewRoute();
+    });
+
+    document.getElementById('categorySelect').addEventListener('change', previewRoute);
+    document.getElementById('promptInput').addEventListener('input', debounce(previewRoute, 400));
+    document.getElementById('filePathsInput').addEventListener('input', debounce(previewRoute, 400));
+
+    function debounce(fn, ms) {
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), ms);
+      };
+    }
+
+    async function previewRoute() {
+      const prompt = document.getElementById('promptInput').value;
+      const category = document.getElementById('categorySelect').value || undefined;
+      const overrideModelId = document.getElementById('overrideSelect').value || undefined;
+      const isPrivate = document.getElementById('privateCheckbox').checked;
+      const confirmPrivateToCloud = document.getElementById('confirmPrivateCheckbox').checked;
+      const filePathsStr = document.getElementById('filePathsInput').value;
+      const filePaths = filePathsStr ? filePathsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      try {
+        const res = await fetch('/api/route', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [{ role: 'user', content: prompt }],
+            category,
+            overrideModelId,
+            sensitivity: isPrivate ? 'private' : undefined,
+            confirmPrivateToCloud,
+            filePaths,
+          }),
+        });
+
+        const data = await res.json();
+        const panel = document.getElementById('decisionPanel');
+        panel.style.display = 'block';
+
+        if (data.error) {
+          document.getElementById('decisionModel').textContent = 'BLOCKED: ' + data.error.code;
+          document.getElementById('decisionModel').style.color = 'var(--accent-rose)';
+          document.getElementById('reasonsList').innerHTML = `<li style="color: var(--accent-rose);">${data.error.message}</li>`;
+          return;
+        }
+
+        document.getElementById('decisionModel').textContent = `${data.modelId} (${data.provider} / ${data.location.toUpperCase()})`;
+        document.getElementById('decisionModel').style.color = data.location === 'local' ? 'var(--accent-emerald)' : 'var(--accent-cyan)';
+
+        const privBadge = document.getElementById('decisionPrivacyBadge');
+        privBadge.textContent = data.sensitivity.toUpperCase();
+        privBadge.className = `badge ${data.sensitivity === 'private' ? 'badge-local' : 'badge-cloud'}`;
+
+        const catBadge = document.getElementById('decisionCategoryBadge');
+        catBadge.textContent = data.category.toUpperCase();
+
+        const reasonsList = document.getElementById('reasonsList');
+        reasonsList.innerHTML = data.reasons.map(r => `<li>${r}</li>`).join('');
+
+        const fallbacksEl = document.getElementById('fallbacksList');
+        fallbacksEl.textContent = data.fallbacks && data.fallbacks.length > 0 ? data.fallbacks.join(', ') : 'None';
+      } catch (err) {
+        console.error('Routing preview failed:', err);
+      }
+    }
+
+    async function executeChat() {
+      const btn = document.getElementById('btnExecute');
+      const resultBox = document.getElementById('resultBox');
+      const statsBar = document.getElementById('statsBar');
+      const prompt = document.getElementById('promptInput').value;
+      const category = document.getElementById('categorySelect').value || undefined;
+      const overrideModelId = document.getElementById('overrideSelect').value || undefined;
+      const isPrivate = document.getElementById('privateCheckbox').checked;
+      const confirmPrivateToCloud = document.getElementById('confirmPrivateCheckbox').checked;
+      const filePathsStr = document.getElementById('filePathsInput').value;
+      const filePaths = filePathsStr ? filePathsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      btn.disabled = true;
+      btn.textContent = 'Executing...';
+      resultBox.style.display = 'block';
+      resultBox.textContent = 'Routing task and connecting to provider...';
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [{ role: 'user', content: prompt }],
+            category,
+            overrideModelId,
+            sensitivity: isPrivate ? 'private' : undefined,
+            confirmPrivateToCloud,
+            filePaths,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.error) {
+          resultBox.textContent = `Error [${data.error.code}]: ${data.error.message}`;
+          resultBox.style.color = 'var(--accent-rose)';
+        } else {
+          resultBox.textContent = data.content;
+          resultBox.style.color = 'var(--text-primary)';
+          statsBar.style.display = 'flex';
+          document.getElementById('statLatency').textContent = `${data.latencyMs}ms`;
+          document.getElementById('statTokens').textContent = data.usage ? `${data.usage.totalTokens} tokens` : 'N/A';
+          document.getElementById('statCost').textContent = data.estimatedCostUsd !== undefined ? `$${data.estimatedCostUsd}` : 'Free';
+        }
+        loadRecentDecisions();
+      } catch (err) {
+        resultBox.textContent = `Network / Execution Error: ${err.message}`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Execute with Routed Model';
+      }
+    }
+
+    async function refreshModels() {
+      const btn = document.getElementById('btnRefresh');
+      btn.disabled = true;
+      btn.textContent = 'Checking...';
+      try {
+        const res = await fetch('/api/models/refresh', { method: 'POST' });
+        modelsData = await res.json();
+        renderModelsList(modelsData);
+        populateOverrideDropdown(modelsData);
+        previewRoute();
+      } catch (err) {
+        console.error('Refresh failed:', err);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Refresh Models';
+      }
+    }
+
+    async function loadRecentDecisions() {
+      try {
+        const res = await fetch('/api/decisions?limit=5');
+        const decisions = await res.json();
+        const container = document.getElementById('recentDecisionsList');
+        if (!decisions || decisions.length === 0) {
+          container.textContent = 'No recent decisions recorded yet.';
+          return;
+        }
+
+        container.innerHTML = decisions.map(d => `
+          <div class="decision-item">
+            <div>
+              <strong>${d.taskId}</strong>: Routed to <code style="color: var(--accent-cyan);">${d.chosenModel}</code>
+              <span class="badge ${d.sensitivity === 'private' ? 'badge-local' : 'badge-cloud'}" style="margin-left: 6px;">${d.sensitivity}</span>
+              <span style="color: var(--text-muted); margin-left: 6px;">[${d.category}]</span>
+            </div>
+            <div style="font-family: var(--font-mono); color: var(--text-secondary);">
+              ${d.latencyMs ? `${d.latencyMs}ms` : ''} | ${new Date(d.timestamp).toLocaleTimeString()}
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('Failed to load decisions:', err);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadModels();
+      loadRecentDecisions();
+    });
+  </script>
+</body>
+</html>

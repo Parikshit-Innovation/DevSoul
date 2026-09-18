@@ -1,0 +1,115 @@
+{
+  "models": [
+    {
+      "id": "claude-3-5-sonnet",
+      "provider": "openrouter",
+      "remoteName": "anthropic/claude-3.5-sonnet",
+      "displayName": "Claude 3.5 Sonnet (Cloud)",
+      "location": "cloud",
+      "strengths": ["architecture", "code_review", "debugging", "general"],
+      "costPer1MInputUsd": 3.0,
+      "costPer1MOutputUsd": 15.0,
+      "latencyTier": "medium",
+      "contextWindow": 200000,
+      "enabled": true
+    },
+    {
+      "id": "gpt-4o",
+      "provider": "openrouter",
+      "remoteName": "openai/gpt-4o",
+      "displayName": "GPT-4o (Cloud)",
+      "location": "cloud",
+      "strengths": ["architecture", "debugging", "general"],
+      "costPer1MInputUsd": 2.5,
+      "costPer1MOutputUsd": 10.0,
+      "latencyTier": "fast",
+      "contextWindow": 128000,
+      "enabled": true
+    },
+    {
+      "id": "llama-3-1-8b",
+      "provider": "openrouter",
+      "remoteName": "meta-llama/llama-3.1-8b-instruct",
+      "displayName": "Llama 3.1 8B Instruct (Cloud Fast)",
+      "location": "cloud",
+      "strengths": ["documentation", "boilerplate", "test_generation"],
+      "costPer1MInputUsd": 0.05,
+      "costPer1MOutputUsd": 0.05,
+      "latencyTier": "fast",
+      "contextWindow": 128000,
+      "enabled": true
+    },
+    {
+      "id": "gemini-flash-1-5",
+      "provider": "openrouter",
+      "remoteName": "google/gemini-flash-1.5",
+      "displayName": "Gemini 1.5 Flash (Cloud Fast)",
+      "location": "cloud",
+      "strengths": ["documentation", "boilerplate", "general"],
+      "costPer1MInputUsd": 0.075,
+      "costPer1MOutputUsd": 0.3,
+      "latencyTier": "fast",
+      "contextWindow": 1000000,
+      "enabled": true
+    },
+    {
+      "id": "qwen-2-5-coder-7b",
+      "provider": "ollama",
+      "remoteName": "qwen2.5-coder:7b",
+      "displayName": "Qwen 2.5 Coder 7B (Local)",
+      "location": "local",
+      "strengths": ["refactor_simple", "boilerplate", "test_generation", "code_review", "debugging", "architecture", "general"],
+      "costPer1MInputUsd": 0.0,
+      "costPer1MOutputUsd": 0.0,
+      "latencyTier": "medium",
+      "contextWindow": 32768,
+      "enabled": true
+    },
+    {
+      "id": "llama-3-2-3b",
+      "provider": "ollama",
+      "remoteName": "llama3.2:3b",
+      "displayName": "Llama 3.2 3B (Local Fast)",
+      "location": "local",
+      "strengths": ["documentation", "boilerplate", "general"],
+      "costPer1MInputUsd": 0.0,
+      "costPer1MOutputUsd": 0.0,
+      "latencyTier": "fast",
+      "contextWindow": 131072,
+      "enabled": true
+    },
+    {
+      "id": "deepseek-r1-8b",
+      "provider": "ollama",
+      "remoteName": "deepseek-r1:8b",
+      "displayName": "DeepSeek R1 8B (Local Reasoning)",
+      "location": "local",
+      "strengths": ["architecture", "debugging", "code_review"],
+      "costPer1MInputUsd": 0.0,
+      "costPer1MOutputUsd": 0.0,
+      "latencyTier": "slow",
+      "contextWindow": 65536,
+      "enabled": true
+    }
+  ],
+  "settings": {
+    "defaultCloudModelId": "claude-3-5-sonnet",
+    "defaultLocalModelId": "qwen-2-5-coder-7b",
+    "healthCheckTtlSeconds": 30,
+    "requestTimeoutMs": {
+      "cloud": 30000,
+      "local": 60000
+    },
+    "privateGlobs": [
+      ".env*",
+      "**/secrets/**",
+      "**/*.pem",
+      "**/*.key",
+      "**/credentials*",
+      "**/*.p12",
+      "**/.ssh/**",
+      "**/.aws/**"
+    ],
+    "privateProject": false
+  }
+}
