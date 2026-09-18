@@ -1,0 +1,30 @@
+{
+  "project_id": "devos-demo",
+  "architecture_summary": "A web application with a vue frontend and a Node.js API.",
+  "technology_stack": {
+    "frontend": "vue",
+    "backend": "Node.js",
+    "database": "MySQL"
+  },
+  "components": [
+    {
+      "name": "frontend",
+      "description": "Handles the frontend layer of the devos-demo application."
+    },
+    {
+      "name": "backend",
+      "description": "Handles the backend layer of the devos-demo application."
+    },
+    {
+      "name": "database",
+      "description": "Handles the database layer of the devos-demo application."
+    }
+  ],
+  "design_constraints": [],
+  "project_files": [
+    "src/frontend/",
+    "src/backend/",
+    "database/",
+    "docs/"
+  ]
+}
