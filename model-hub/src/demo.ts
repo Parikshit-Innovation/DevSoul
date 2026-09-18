@@ -15,8 +15,8 @@ function printHeader(title: string) {
   console.log('='.repeat(80));
 }
 
-function printStep(stepNum: number, title: string) {
-  console.log(`\n▶ BEAT ${stepNum}: ${title}`);
+function printStep(stepNum: number, title: string, mode: 'LIVE' | 'MOCKED' = 'MOCKED') {
+  console.log(`\n▶ BEAT ${stepNum} [${mode}]: ${title}`);
   console.log('-'.repeat(80));
 }
 

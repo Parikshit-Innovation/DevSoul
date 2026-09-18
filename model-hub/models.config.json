@@ -1,29 +1,29 @@
 {
   "models": [
     {
-      "id": "claude-3-5-sonnet",
-      "provider": "openrouter",
-      "remoteName": "anthropic/claude-3.5-sonnet",
-      "displayName": "Claude 3.5 Sonnet (Cloud)",
-      "location": "cloud",
-      "strengths": ["architecture", "code_review", "debugging", "general"],
-      "costPer1MInputUsd": 3.0,
-      "costPer1MOutputUsd": 15.0,
-      "latencyTier": "medium",
-      "contextWindow": 200000,
-      "enabled": true
-    },
-    {
       "id": "gpt-4o",
       "provider": "openrouter",
       "remoteName": "openai/gpt-4o",
-      "displayName": "GPT-4o (Cloud)",
+      "displayName": "GPT-4o (Cloud Reasoning)",
       "location": "cloud",
-      "strengths": ["architecture", "debugging", "general"],
+      "strengths": ["architecture", "code_review", "debugging", "general"],
       "costPer1MInputUsd": 2.5,
       "costPer1MOutputUsd": 10.0,
       "latencyTier": "fast",
       "contextWindow": 128000,
+      "enabled": true
+    },
+    {
+      "id": "claude-3-5-sonnet",
+      "provider": "openrouter",
+      "remoteName": "anthropic/claude-3-haiku",
+      "displayName": "Claude 3 (Cloud Reasoning)",
+      "location": "cloud",
+      "strengths": ["architecture", "code_review", "debugging", "general"],
+      "costPer1MInputUsd": 0.25,
+      "costPer1MOutputUsd": 1.25,
+      "latencyTier": "medium",
+      "contextWindow": 200000,
       "enabled": true
     },
     {
@@ -42,8 +42,8 @@
     {
       "id": "gemini-flash-1-5",
       "provider": "openrouter",
-      "remoteName": "google/gemini-flash-1.5",
-      "displayName": "Gemini 1.5 Flash (Cloud Fast)",
+      "remoteName": "google/gemini-2.5-flash",
+      "displayName": "Gemini 2.5 Flash (Cloud Fast)",
       "location": "cloud",
       "strengths": ["documentation", "boilerplate", "general"],
       "costPer1MInputUsd": 0.075,
@@ -93,7 +93,7 @@
     }
   ],
   "settings": {
-    "defaultCloudModelId": "claude-3-5-sonnet",
+    "defaultCloudModelId": "gpt-4o",
     "defaultLocalModelId": "qwen-2-5-coder-7b",
     "healthCheckTtlSeconds": 30,
     "requestTimeoutMs": {
