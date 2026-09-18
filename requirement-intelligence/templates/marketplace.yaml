@@ -1,0 +1,60 @@
+keywords:
+  - marketplace
+  - buy
+  - sell
+  - selling
+  - buying
+  - listing
+  - vendor
+  - store
+  - shop
+  - auction
+  - ecommerce
+  - e-commerce
+  - product
+  - item
+  - goods
+  - trade
+
+# Marketplace-specific nodes (base.yaml owns: users, auth, scale, deployment, data_model)
+nodes:
+  seller_type:
+    weight: 7
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Students only"
+      - "Students + local businesses"
+      - "Anyone with an account"
+    question: "Who is allowed to sell on the marketplace?"
+
+  buyer_type:
+    weight: 6
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Students only"
+      - "Anyone with an account"
+      - "Public (no login needed)"
+    question: "Who is allowed to buy on the marketplace?"
+
+  verification:
+    weight: 9
+    depends_on: [users]
+    required: true
+    default_options:
+      - "College email domain check (.edu)"
+      - "Manual admin review"
+      - "No verification required"
+      - "Third-party identity provider"
+    question: "How will sellers be verified as legitimate?"
+
+  payments:
+    weight: 8
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Online payments (Stripe / Razorpay)"
+      - "Cash on meetup"
+      - "Both online and cash"
+    question: "How will payments between buyers and sellers be handled?"

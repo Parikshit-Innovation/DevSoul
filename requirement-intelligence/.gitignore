@@ -1,0 +1,29 @@
+# Secrets
+.env
+
+# Generated output (written at runtime)
+output/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/

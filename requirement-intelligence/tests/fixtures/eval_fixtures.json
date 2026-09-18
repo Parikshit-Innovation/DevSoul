@@ -1,0 +1,496 @@
+{
+  "eval_01_idea_analysis": {
+    "name": "Online Marketplace College Students",
+    "summary": "Build an online marketplace for college students to buy and sell textbooks and dorm gear. Only verified students with a .edu email should be allowed to sell products. Payments must",
+    "seed_requirements": [
+      {
+        "title": "Verified student access",
+        "description": "Only verified university students are authorized to use the platform.",
+        "type": "security",
+        "priority": "high",
+        "topic": "verification"
+      },
+      {
+        "title": "Online payment processing",
+        "description": "Payments are processed securely online via payment gateway.",
+        "type": "feature",
+        "priority": "high",
+        "topic": "payments"
+      }
+    ]
+  },
+  "eval_01_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "verification",
+        "question": "Tell us about verification",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "payments",
+        "question": "Tell us about payments",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_01_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  },
+  "eval_02_idea_analysis": {
+    "name": "Saas Analytics Dashboard Digital",
+    "summary": "Build a SaaS analytics dashboard for digital marketing agencies with multi-tenant workspace isolation and subscription billing through Stripe. Users log in with Google OAuth.",
+    "seed_requirements": [
+      {
+        "title": "Online payment processing",
+        "description": "Payments are processed securely online via payment gateway.",
+        "type": "feature",
+        "priority": "high",
+        "topic": "payments"
+      },
+      {
+        "title": "Multi-tenant workspace isolation",
+        "description": "Each organization has an isolated workspace environment.",
+        "type": "security",
+        "priority": "high",
+        "topic": "multi_tenancy"
+      }
+    ]
+  },
+  "eval_02_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "auth",
+        "question": "Tell us about auth",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "multi_tenancy",
+        "question": "Tell us about multi_tenancy",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_02_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  },
+  "eval_03_idea_analysis": {
+    "name": "Rest Api Microservice Warehouse",
+    "summary": "Build a REST API microservice for warehouse inventory management. Expose CRUD endpoints for inventory items and webhook event notifications for low stock alerts.",
+    "seed_requirements": [
+      {
+        "title": "REST API resource endpoints",
+        "description": "Provides core CRUD endpoints for resource operations.",
+        "type": "feature",
+        "priority": "high",
+        "topic": "endpoints"
+      }
+    ]
+  },
+  "eval_03_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "auth",
+        "question": "Tell us about auth",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "endpoints",
+        "question": "Tell us about endpoints",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_03_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  },
+  "eval_04_idea_analysis": {
+    "name": "Crossplatform Mobile App Workout",
+    "summary": "Build a cross-platform mobile app for workout and fitness tracking supporting iOS and Android. It must support full offline logging with a local SQLite database that syncs when onl",
+    "seed_requirements": [
+      {
+        "title": "Local offline SQLite storage",
+        "description": "Data is stored locally on device for offline operation.",
+        "type": "feature",
+        "priority": "high",
+        "topic": "offline_storage"
+      }
+    ]
+  },
+  "eval_04_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "auth",
+        "question": "Tell us about auth",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "mobile_platform",
+        "question": "Tell us about mobile_platform",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_04_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  },
+  "eval_05_idea_analysis": {
+    "name": "Endtoend Machine Learning Customer",
+    "summary": "Build an end-to-end machine learning customer churn prediction service. Model predictions will be served in real-time through a FastAPI REST endpoint, reading batch training data f",
+    "seed_requirements": []
+  },
+  "eval_05_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "auth",
+        "question": "Tell us about auth",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "data_source",
+        "question": "Tell us about data_source",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_05_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  },
+  "eval_06_idea_analysis": {
+    "name": "Internal Web Portal Employee",
+    "summary": "Build an internal web portal for employee onboarding with a multi-page dashboard, document signing, and checklist tracking. All company employees authenticate using company single ",
+    "seed_requirements": []
+  },
+  "eval_06_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "auth",
+        "question": "Tell us about auth",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "pages",
+        "question": "Tell us about pages",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_06_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  },
+  "eval_07_idea_analysis": {
+    "name": "Commandline Developer Tool Linting",
+    "summary": "Build a command-line developer tool for linting and validating Kubernetes YAML manifests before deployment. Must output colored terminal text and JSON format.",
+    "seed_requirements": []
+  },
+  "eval_07_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "auth",
+        "question": "Tell us about auth",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "scale",
+        "question": "Tell us about scale",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_07_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  },
+  "eval_08_idea_analysis": {
+    "name": "Realtime Team Messaging Web",
+    "summary": "Build a real-time team messaging web application with public and private channels. Requires user authentication and client-side single-page app routing.",
+    "seed_requirements": []
+  },
+  "eval_08_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "auth",
+        "question": "Tell us about auth",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "pages",
+        "question": "Tell us about pages",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_08_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  },
+  "eval_09_idea_analysis": {
+    "name": "B2b Saas Platform Medical",
+    "summary": "Build a B2B SaaS platform for medical clinics to schedule virtual telemedicine consultations. Requires role-based permissions for doctors, patients, and clinic administrators.",
+    "seed_requirements": []
+  },
+  "eval_09_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "auth",
+        "question": "Tell us about auth",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "multi_tenancy",
+        "question": "Tell us about multi_tenancy",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_09_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  },
+  "eval_10_idea_analysis": {
+    "name": "Highscale Backend Microservice To",
+    "summary": "Build a high-scale backend microservice to receive and process incoming third-party payment webhooks. Must handle heavy volume with tiered rate limiting and PostgreSQL storage.",
+    "seed_requirements": [
+      {
+        "title": "API rate limiting",
+        "description": "Protects endpoints against abusive traffic volumes.",
+        "type": "security",
+        "priority": "high",
+        "topic": "rate_limiting"
+      }
+    ]
+  },
+  "eval_10_question_gen": {
+    "questions": [
+      {
+        "node_id": "users",
+        "question": "Tell us about users",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "auth",
+        "question": "Tell us about auth",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      },
+      {
+        "node_id": "endpoints",
+        "question": "Tell us about endpoints",
+        "options": [
+          "Option A",
+          "Option B",
+          "Option C"
+        ],
+        "allow_free_text": true
+      }
+    ]
+  },
+  "eval_10_answer_extract": {
+    "node_id": "users",
+    "value": "Option 1",
+    "confidence": 0.95
+  }
+}

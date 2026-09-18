@@ -1,0 +1,122 @@
+# Derived-requirements rule engine definitions
+# Evaluated deterministically against answered graph topics.
+rules:
+  - id: rule_payment_security
+    condition:
+      topic: payments
+      matches: ["online", "stripe", "razorpay", "both"]
+    requirement:
+      title: "Payment gateway integration & PCI-DSS tokenization"
+      description: "Integrate with a PCI-DSS certified payment gateway (e.g. Stripe) using client-side tokenization so raw card data never touches the server."
+      type: security
+      priority: high
+
+  - id: rule_meetup_safety
+    condition:
+      topic: payments
+      matches: ["cash", "meetup"]
+    requirement:
+      title: "In-person meetup transaction safety guidelines"
+      description: "Provide designated safe campus meetup exchange zones and verification check-in steps before physical handover."
+      type: feature
+      priority: medium
+
+  - id: rule_auth_brute_force
+    condition:
+      topic: auth
+      matches: ["password", "email", "multiple"]
+    requirement:
+      title: "Credential brute-force protection & argon2 hashing"
+      description: "Enforce Argon2id / bcrypt password hashing, account lockout or exponential backoff after 5 failed login attempts, and rate limiting."
+      type: security
+      priority: high
+
+  - id: rule_oauth_security
+    condition:
+      topic: auth
+      matches: ["google", "oauth", "sso", "college email"]
+    requirement:
+      title: "OAuth2 / OIDC state parameter verification & PKCE"
+      description: "Implement OAuth2 / OpenID Connect authorization code flow with PKCE and CSRF state token verification."
+      type: security
+      priority: high
+
+  - id: rule_student_verification
+    condition:
+      topic: verification
+      matches: ["college email", "domain", "email", ".edu"]
+    requirement:
+      title: "Automated institutional email domain verification"
+      description: "Validate university affiliation via .edu email confirmation token with automated expiry."
+      type: security
+      priority: high
+
+  - id: rule_high_scale_caching
+    condition:
+      topic: scale
+      matches: ["large", "100k", "medium", "1k-100k"]
+    requirement:
+      title: "Distributed Redis caching and CDN static asset caching"
+      description: "Deploy Redis cluster for hot data and session caching, with Cloudflare / CloudFront CDN edge caching for static assets."
+      type: chore
+      priority: high
+
+  - id: rule_database_backups
+    condition:
+      topic: data_model
+      matches: ["relational", "postgresql", "mysql"]
+    requirement:
+      title: "Automated database backups & point-in-time recovery"
+      description: "Configure daily automated encrypted database snapshots and point-in-time recovery (PITR) with minimum 14-day retention."
+      type: chore
+      priority: high
+
+  - id: rule_api_rate_limiting
+    condition:
+      topic: rate_limiting
+      matches: ["basic", "tiered", "per api key"]
+    requirement:
+      title: "Token bucket API rate limiting middleware"
+      description: "Implement sliding-window / token-bucket rate limiting returning HTTP 429 Too Many Requests with Retry-After headers."
+      type: security
+      priority: high
+
+  - id: rule_multi_tenant_isolation
+    condition:
+      topic: multi_tenancy
+      matches: ["tenant", "shared", "isolation", "row-level"]
+    requirement:
+      title: "Tenant data isolation & authorization filters"
+      description: "Enforce tenant_id scoping on every database query and request context to prevent cross-tenant data leakage."
+      type: security
+      priority: high
+
+  - id: rule_mobile_offline_sync
+    condition:
+      topic: offline_storage
+      matches: ["sqlite", "sync", "cache", "local"]
+    requirement:
+      title: "Bidirectional conflict-resolution sync engine"
+      description: "Provide client-side vector clocks / timestamp conflict resolution when syncing local offline SQLite data to cloud APIs."
+      type: feature
+      priority: high
+
+  - id: rule_ml_model_monitoring
+    condition:
+      topic: inference_mode
+      matches: ["api", "batch", "rest", "grpc"]
+    requirement:
+      title: "Model inference latency & data drift telemetry"
+      description: "Log input feature distributions and prediction latency to detect model degradation and concept drift over time."
+      type: chore
+      priority: medium
+
+  - id: rule_cloud_iac_deployment
+    condition:
+      topic: deployment
+      matches: ["cloud", "aws", "gcp", "azure"]
+    requirement:
+      title: "Containerized deployment with liveness probes"
+      description: "Package application into minimal OCI container images with automated health and readiness probes for orchestrator self-healing."
+      type: chore
+      priority: medium

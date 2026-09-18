@@ -1,0 +1,45 @@
+keywords:
+  - mobile
+  - ios
+  - android
+  - react native
+  - flutter
+  - swift
+  - kotlin
+  - app store
+  - phone
+
+# Mobile app specific nodes (base.yaml owns: users, auth, scale, deployment, data_model)
+nodes:
+  mobile_platform:
+    weight: 8
+    depends_on: [users]
+    required: true
+    default_options:
+      - "iOS and Android (cross-platform)"
+      - "iOS only"
+      - "Android only"
+      - "Web + Mobile hybrid"
+    question: "Which mobile operating systems will be supported?"
+
+  offline_storage:
+    weight: 6
+    depends_on: [mobile_platform]
+    required: true
+    default_options:
+      - "Local SQLite with cloud sync"
+      - "Offline read-only cache"
+      - "Online only (no offline data)"
+      - "Key-value store (AsyncStorage/Preferences)"
+    question: "What is the local offline storage strategy?"
+
+  push_notifications:
+    weight: 5
+    depends_on: [mobile_platform]
+    required: true
+    default_options:
+      - "Firebase Cloud Messaging (FCM / APNs)"
+      - "Transactional email/SMS only"
+      - "No push notifications"
+      - "Third-party service (OneSignal)"
+    question: "How will push notifications be handled?"

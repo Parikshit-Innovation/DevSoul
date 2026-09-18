@@ -1,0 +1,47 @@
+keywords:
+  - ml
+  - machine learning
+  - ai
+  - data science
+  - training
+  - inference
+  - model
+  - prediction
+  - dataset
+  - neural
+  - deep learning
+
+# Data/ML app specific nodes (base.yaml owns: users, auth, scale, deployment, data_model)
+nodes:
+  data_source:
+    weight: 8
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Batch CSV / S3 parquet files"
+      - "Real-time streaming (Kafka / PubSub)"
+      - "Database tables (PostgreSQL / BigQuery)"
+      - "Direct user upload via API"
+    question: "Where does the training and inference data originate?"
+
+  inference_mode:
+    weight: 7
+    depends_on: [data_source]
+    required: true
+    default_options:
+      - "Real-time REST / gRPC API"
+      - "Scheduled batch prediction jobs"
+      - "On-device edge inference"
+      - "Event-driven asynchronous workers"
+    question: "How will model predictions be served to consumers?"
+
+  model_registry:
+    weight: 6
+    depends_on: [data_source]
+    required: true
+    default_options:
+      - "Managed registry (MLflow / W&B)"
+      - "Cloud model bucket (S3 / GCS)"
+      - "Docker container embedded"
+      - "Hugging Face Hub"
+    question: "Where and how will versioned models be stored?"

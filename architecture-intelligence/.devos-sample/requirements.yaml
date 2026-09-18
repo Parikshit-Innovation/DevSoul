@@ -1,0 +1,34 @@
+project: devos-demo
+requirements:
+  - id: REQ-001
+    text: Students can browse upcoming campus events and register for them online
+    category: feature
+    status: confirmed
+  - id: REQ-002
+    text: Each student may register for a given event only once (prevent duplicate registrations)
+    category: constraint
+    status: confirmed
+  - id: REQ-003
+    text: Only authorized organizers can create, edit, or delete events
+    category: auth
+    status: confirmed
+  - id: REQ-004
+    text: Students must log in with their college email address (institution SSO or email/password)
+    category: auth
+    status: confirmed
+  - id: REQ-005
+    text: Organizers can view the full attendee list and export it as CSV
+    category: feature
+    status: proposed
+  - id: REQ-006
+    text: The system must handle at least 500 concurrent users during peak registration periods
+    category: performance
+    status: proposed
+  - id: REQ-007
+    text: Event data (name, date, location, capacity, description) must be persisted reliably
+    category: data
+    status: confirmed
+  - id: REQ-008
+    text: Registration confirmations should be sent to students via email
+    category: feature
+    status: proposed
