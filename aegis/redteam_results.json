@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-18T17:46:03.997Z",
+  "timestamp": "2026-09-18T17:50:39.815Z",
   "scorecard": {
     "total": 10,
     "blocked": 10,
@@ -87,7 +87,7 @@
       "passed": true,
       "expected": "First consume success, replay blocked",
       "actual": "Consume: true, Replay: false",
-      "details": "Replay attack detected: Approval ticket 'appr-1789753563996-11-930fe802' has already been consumed"
+      "details": "Replay attack detected: Approval ticket 'appr-1789753839814-11-4b3a4d6a' has already been consumed"
     },
     {
       "id": "RT-10",
