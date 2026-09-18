@@ -1,0 +1,35 @@
+keywords:
+  - api
+  - service
+  - microservice
+  - backend
+  - rest
+  - graphql
+  - endpoint
+  - webhook
+  - integration
+  - sdk
+  - server
+
+# API service specific nodes (base.yaml owns: users, auth, scale, deployment, data_model)
+nodes:
+  endpoints:
+    weight: 8
+    depends_on: [users]
+    required: true
+    default_options:
+      - "CRUD endpoints for core resource"
+      - "REST + webhook callbacks"
+      - "GraphQL API"
+      - "Mixed REST + GraphQL"
+    question: "What kinds of endpoints will this API expose?"
+
+  rate_limiting:
+    weight: 6
+    depends_on: [endpoints]
+    required: true
+    default_options:
+      - "No rate limiting (internal only)"
+      - "Basic (per API key)"
+      - "Tiered (free / pro limits)"
+    question: "How will rate limiting be applied to API consumers?"

@@ -1,0 +1,34 @@
+keywords:
+  - web app
+  - webapp
+  - website
+  - dashboard
+  - portal
+  - saas
+  - platform
+  - interface
+  - frontend
+  - ui
+  - single page
+
+# Web app specific nodes (base.yaml owns: users, auth, scale, deployment, data_model)
+nodes:
+  pages:
+    weight: 7
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Landing + dashboard only"
+      - "Multi-page (landing, auth, dashboard, settings)"
+      - "Complex multi-section app"
+    question: "What pages / sections will the web app have?"
+
+  routing:
+    weight: 5
+    depends_on: [pages]
+    required: true
+    default_options:
+      - "Client-side routing (SPA)"
+      - "Server-side routing (SSR)"
+      - "Hybrid (Next.js / Nuxt)"
+    question: "How will page navigation and routing work?"

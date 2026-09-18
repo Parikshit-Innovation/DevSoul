@@ -1,0 +1,55 @@
+# Shared nodes — present in EVERY project type
+# These are the 5 completeness-checklist topics from the spec.
+nodes:
+  users:
+    weight: 10
+    depends_on: []
+    required: true
+    default_options:
+      - "Single role"
+      - "Two roles (e.g. buyer + seller)"
+      - "Multiple roles + admin"
+    question: "Who will use this system?"
+
+  auth:
+    weight: 9
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Email / password"
+      - "Google OAuth"
+      - "College email (SSO / domain check)"
+      - "Multiple methods"
+    question: "How will users authenticate?"
+
+  scale:
+    weight: 7
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Small (<1k users)"
+      - "Medium (1k–100k users)"
+      - "Large (100k+ users)"
+    question: "What is the expected scale of users?"
+
+  deployment:
+    weight: 6
+    depends_on: []
+    required: true
+    default_options:
+      - "Cloud (AWS / GCP / Azure)"
+      - "Self-hosted server"
+      - "Serverless (Vercel / Netlify)"
+      - "Undecided"
+    question: "Where will the application be deployed?"
+
+  data_model:
+    weight: 8
+    depends_on: [users]
+    required: true
+    default_options:
+      - "Relational database (PostgreSQL / MySQL)"
+      - "Document store (MongoDB)"
+      - "Mixed (relational + cache)"
+      - "Undecided"
+    question: "What kind of data storage will the system use?"
