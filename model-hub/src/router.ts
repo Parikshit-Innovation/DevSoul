@@ -19,11 +19,11 @@ export class ModelRouter {
 
   constructor(
     registry: ModelRegistry,
-    privacyDetector: PrivacyDetector,
+    privacyDetector: PrivacyDetector = new PrivacyDetector(),
     rules: RoutingRule[] = DEFAULT_ROUTING_RULES
   ) {
     this.registry = registry;
-    this.privacyDetector = privacyDetector;
+    this.privacyDetector = privacyDetector || new PrivacyDetector();
     this.rules = [...rules];
   }
 

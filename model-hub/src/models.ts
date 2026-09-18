@@ -37,7 +37,7 @@ export interface ModelStatus extends ModelEntry {
 }
 
 export interface ChatMessage {
-  role: 'system' | 'user' | 'assistant';
+  role: 'system' | 'user' | 'assistant' | 'tool';
   content: string;
 }
 
@@ -51,6 +51,8 @@ export interface RouteRequest {
   confirmPrivateToCloud?: boolean;
   maxCostTier?: 'free' | 'cheap' | 'any';
   preferLowLatency?: boolean;
+  signal?: AbortSignal;
+  timeoutMs?: number;
 }
 
 export interface RouteDecision {

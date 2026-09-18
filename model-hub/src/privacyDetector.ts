@@ -47,7 +47,7 @@ export class PrivacyDetector {
     },
     {
       name: 'GENERIC_ASSIGNMENT_SECRET',
-      regex: /(?:password|secret|api_?key|token|auth_?token|client_?secret)\s*[:=]\s*["']([^"'\s]{8,})["']/i,
+      regex: /(?:[A-Za-z0-9_]*(?:password|passwd|secret|api_?key|auth_?token|client_?secret|private_?key)[A-Za-z0-9_]*)\s*[:=]\s*(?:["']([^"'\r\n]{6,})["']|([A-Za-z0-9_\-!@#$%^&*+=]{8,}))/i,
       description: 'Explicit credential assignment (password/secret/token/apiKey)',
     },
     {
@@ -118,12 +118,36 @@ export class PrivacyDetector {
       }
     }
 
-    // 4. Message content secret regex inspection
-    const messageContent = request.messages.map((m) => m.content).join('\n');
-    for (const pattern of PrivacyDetector.SECRET_PATTERNS) {
-      if (pattern.regex.test(messageContent)) {
-        detectedPatterns.push(pattern.name);
-        reasons.push(`Message content contains detected secret pattern: ${pattern.description}`);
+    // 4. Message content secret regex inspection across EVERY message (system, user, assistant, tool)
+    if (request.messages && Array.isArray(request.messages)) {
+      for (const msg of request.messages) {
+        const content = typeof msg.content === 'string' ? msg.content : '';
+        for (const pattern of PrivacyDetector.SECRET_PATTERNS) {
+          if (pattern.regex.test(content) && !detectedPatterns.includes(pattern.name)) {
+            detectedPatterns.push(pattern.name);
+            reasons.push(`Message [role=${msg.role || 'unknown'}] contains detected secret pattern: ${pattern.description}`);
+          }
+        }
+
+        // Also check if message text explicitly references sensitive file paths (e.g. .env, id_rsa)
+        for (const glob of this.privateGlobs) {
+          const simpleName = glob.replace(/\*\*\/?/g, '').replace(/\*/g, '');
+          if (simpleName && simpleName.length > 3 && content.includes(simpleName)) {
+            if (!matchedFilePaths.includes(simpleName)) {
+              matchedFilePaths.push(simpleName);
+              reasons.push(`Message [role=${msg.role || 'unknown'}] references sensitive file/path '${simpleName}'`);
+            }
+          }
+        }
+      }
+
+      // Also test concatenated messages for split secrets across messages
+      const fullText = request.messages.map((m) => m.content || '').join('\n');
+      for (const pattern of PrivacyDetector.SECRET_PATTERNS) {
+        if (pattern.regex.test(fullText) && !detectedPatterns.includes(pattern.name)) {
+          detectedPatterns.push(pattern.name);
+          reasons.push(`Combined message stream contains detected secret pattern: ${pattern.description}`);
+        }
       }
     }
 
