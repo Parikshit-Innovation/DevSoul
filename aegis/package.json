@@ -1,0 +1,28 @@
+{
+  "name": "@devsoul/aegis",
+  "version": "1.0.0",
+  "description": "Aegis — Intelligent AI Security Control Plane for DevOS",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "cli": "node --experimental-strip-types src/cli.ts",
+    "evaluate": "node --experimental-strip-types src/cli.ts",
+    "demo": "node --experimental-strip-types src/demo.ts",
+    "redteam": "node --experimental-strip-types redteam/runner.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0"
+  },
+  "keywords": [
+    "security",
+    "ai-agents",
+    "policy-engine",
+    "aegis",
+    "devos"
+  ],
+  "author": "DevOS Team",
+  "license": "MIT"
+}
