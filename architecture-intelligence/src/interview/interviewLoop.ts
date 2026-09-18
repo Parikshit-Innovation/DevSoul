@@ -23,24 +23,42 @@ export async function runInterview(
   console.log("  Architecture Interview");
   console.log(`  ${total} questions — type your answer, "you choose", or a`);
   console.log(`  comma-separated list (e.g. "React, Vue") and Gemini picks.`);
+  console.log(`  Type "auto decide everything" to have Gemini pick everything.`);
   console.log(`${DIVIDER}\n`);
+
+  let autoDecideAll = false;
 
   for (let i = 0; i < QUESTIONS.length; i++) {
     const q = QUESTIONS[i];
     let answer = "";
 
     while (!answer) {
-      const raw = await rl.question(
-        `[${i + 1}/${total}] (${q.category}) ${q.prompt}\n> `
-      );
-      const trimmed = raw.trim();
+      let trimmed = "";
+      if (autoDecideAll) {
+        console.log(`[${i + 1}/${total}] (${q.category}) ${q.prompt}`);
+        trimmed = "auto decide everything";
+      } else {
+        const raw = await rl.question(
+          `[${i + 1}/${total}] (${q.category}) ${q.prompt}\n> `
+        );
+        trimmed = raw.trim();
+      }
 
       if (!trimmed) {
         console.log('  Please enter a value, "you choose", or a comma-separated list.\n');
         continue;
       }
 
-      if (trimmed.toLowerCase() === "you choose") {
+      if (trimmed.toLowerCase() === "auto decide everything" || autoDecideAll) {
+        if (!autoDecideAll) {
+          console.log(`\n  🤖 Auto-deciding all remaining questions...\n`);
+          autoDecideAll = true;
+        }
+        process.stdout.write("  🤖 Asking Gemini...");
+        const chosen = await chooseTechStack(requirements, q.key, q.prompt);
+        process.stdout.write(`\r  🤖 Gemini chose → \x1b[32m${chosen}\x1b[0m\n\n`);
+        answer = chosen;
+      } else if (trimmed.toLowerCase() === "you choose") {
         // ── LLM picks from scratch ──────────────────────────────────────
         process.stdout.write("  🤖 Asking Gemini...");
         const chosen = await chooseTechStack(requirements, q.key, q.prompt);

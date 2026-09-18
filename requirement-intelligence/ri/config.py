@@ -18,6 +18,8 @@ def _get(key: str, default: str | None = None) -> str | None:
 # ── Gemini ────────────────────────────────────────────────────────────────────
 GEMINI_API_KEY: str | None = _get("GEMINI_API_KEY")
 GEMINI_MODEL: str = _get("GEMINI_MODEL", "gemini-2.5-flash")  # type: ignore[assignment]
+OLLAMA_MODEL: str = _get("OLLAMA_MODEL", "qwen2.5-coder:7b")  # type: ignore[assignment]
+
 
 # ── Interview ─────────────────────────────────────────────────────────────────
 RI_MAX_ROUNDS: int = int(_get("RI_MAX_ROUNDS", "10"))  # type: ignore[arg-type]

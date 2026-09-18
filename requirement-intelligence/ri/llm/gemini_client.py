@@ -12,7 +12,7 @@ import google.genai as genai
 import google.genai.errors as genai_errors
 from google.genai import types as genai_types
 
-from ri.llm.base import BaseLLM
+from ri.llm.base import BaseLLM, ExhaustedError
 
 logger = logging.getLogger(__name__)
 
@@ -81,9 +81,11 @@ class GeminiClient(BaseLLM):
 
         for attempt in range(_MAX_ATTEMPTS):
             try:
-                response = self._client.models.generate_content(
-                    model=self._model,
-                    contents=prompt,
+                # Use chat.send_message instead of models.generate_content to avoid 
+                # the Automatic Function Calling (AFC) SDK warning.
+                chat = self._client.chats.create(model=self._model)
+                response = chat.send_message(
+                    message=prompt,
                     config=config,
                 )
                 latency_ms = round((time.perf_counter() - t_start) * 1000, 1)
@@ -149,4 +151,4 @@ class GeminiClient(BaseLLM):
 
         latency_ms = round((time.perf_counter() - t_start) * 1000, 1)
         logger.error("[ri/gemini] all %d attempts failed for task=%s", _MAX_ATTEMPTS, task)
-        return CompletionResult(data=None, latency_ms=latency_ms, model=self._model)
+        raise ExhaustedError(f"Gemini exhausted all {_MAX_ATTEMPTS} attempts for task {task}")

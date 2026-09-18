@@ -13,6 +13,8 @@ import * as fs from "node:fs/promises";
 
 import { runPipeline } from "./pipeline.js";
 import { createGeminiProviderFromEnv } from "./llm/gemini.js";
+import { createOllamaProviderFromEnv } from "./llm/ollama.js";
+import { FallbackProvider } from "./llm/fallback.js";
 import type { PipelineEvent } from "./types/pipeline.js";
 
 // ─── Resolve directories ─────────────────────────────────────────────────────
@@ -91,8 +93,8 @@ app.post("/api/pipeline/run", async (req: Request, res: Response) => {
   };
 
   // Resolve LLM provider
-  const llmProvider = createGeminiProviderFromEnv();
-  if (!llmProvider) {
+  const primaryProvider = createGeminiProviderFromEnv();
+  if (!primaryProvider) {
     const errEvent: PipelineEvent = {
       type: "PIPELINE_FAILED",
       timestamp: new Date().toISOString(),
@@ -105,6 +107,9 @@ app.post("/api/pipeline/run", async (req: Request, res: Response) => {
     res.end();
     return;
   }
+
+  const fallbackProvider = createOllamaProviderFromEnv();
+  const llmProvider = new FallbackProvider(primaryProvider, fallbackProvider);
 
   const result = await runPipeline({
     task: task ?? "Implement the campus event browsing and registration functionality according to the requirements and architecture.",

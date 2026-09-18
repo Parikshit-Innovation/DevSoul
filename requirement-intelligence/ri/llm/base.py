@@ -4,6 +4,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any
 
+class ExhaustedError(Exception):
+    """Raised when an LLM client exhausts all retry attempts."""
+    pass
+
+
 
 class BaseLLM(ABC):
     """Every LLM client must implement complete().

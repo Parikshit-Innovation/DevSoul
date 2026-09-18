@@ -1,0 +1,9 @@
+{
+  "extends": "../agent-factory/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "outDir": "../agent-factory/dist/pipeline-runner",
+    "typeRoots": ["../agent-factory/node_modules/@types"]
+  },
+  "include": ["./**/*.ts"]
+}

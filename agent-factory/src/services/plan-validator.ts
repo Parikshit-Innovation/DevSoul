@@ -112,22 +112,20 @@ export function validatePlan(
       }
     }
 
-    // Check 7: Requirement IDs refer to actual requirements
-    for (const reqId of agent.requirement_ids) {
-      if (!validRequirementIds.has(reqId)) {
-        errors.push(
-          `${ctx} Requirement ID "${reqId}" does not exist in the input requirements.`
-        );
-      }
+    // Check 7: Requirement IDs refer to actual requirements (filter invalid ones)
+    const validAgentReqs = agent.requirement_ids.filter(id => validRequirementIds.has(id));
+    if (validAgentReqs.length < agent.requirement_ids.length) {
+      const invalid = agent.requirement_ids.filter(id => !validRequirementIds.has(id));
+      warnings.push(`${ctx} Removed invalid requirement IDs: ${invalid.join(", ")}`);
+      agent.requirement_ids = validAgentReqs;
     }
 
-    // Check 8: Architecture component references are valid
-    for (const comp of agent.architecture_components) {
-      if (!validComponentNames.has(comp)) {
-        errors.push(
-          `${ctx} Architecture component "${comp}" does not exist in the input architecture.`
-        );
-      }
+    // Check 8: Architecture component references are valid (filter invalid ones)
+    const validAgentComps = agent.architecture_components.filter(c => validComponentNames.has(c));
+    if (validAgentComps.length < agent.architecture_components.length) {
+      const invalid = agent.architecture_components.filter(c => !validComponentNames.has(c));
+      warnings.push(`${ctx} Removed invalid architecture components: ${invalid.join(", ")}`);
+      agent.architecture_components = validAgentComps;
     }
 
     // Check 9: No self-dependency

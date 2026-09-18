@@ -19,12 +19,28 @@ export function getActiveProvider(): LlmProvider {
   return p;
 }
 
+let isGeminiBroken = false;
+
 export async function chooseTechStack(
   requirements: any,
   key: string,
   prompt: string
 ): Promise<string> {
-  return getActiveProvider().chooseTechStack(requirements, key, prompt);
+  if (isGeminiBroken) {
+    return ollamaProvider.chooseTechStack(requirements, key, prompt);
+  }
+  
+  const provider = getActiveProvider();
+  try {
+    return await provider.chooseTechStack(requirements, key, prompt);
+  } catch (err: any) {
+    if (provider.name !== "ollama" && (err?.message?.includes("503") || err?.message?.includes("429"))) {
+      console.warn(`\n  ⚠  ${provider.name} overloaded. Breaking circuit and permanently falling back to ollama...`);
+      isGeminiBroken = true;
+      return ollamaProvider.chooseTechStack(requirements, key, prompt);
+    }
+    throw err;
+  }
 }
 
 export async function analyzeStack(
@@ -32,9 +48,37 @@ export async function analyzeStack(
   key: string,
   proposed: string[]
 ): Promise<string> {
-  return getActiveProvider().analyzeStack(requirements, key, proposed);
+  if (isGeminiBroken) {
+    return ollamaProvider.analyzeStack(requirements, key, proposed);
+  }
+
+  const provider = getActiveProvider();
+  try {
+    return await provider.analyzeStack(requirements, key, proposed);
+  } catch (err: any) {
+    if (provider.name !== "ollama" && (err?.message?.includes("503") || err?.message?.includes("429"))) {
+      console.warn(`\n  ⚠  ${provider.name} overloaded. Breaking circuit and permanently falling back to ollama...`);
+      isGeminiBroken = true;
+      return ollamaProvider.analyzeStack(requirements, key, proposed);
+    }
+    throw err;
+  }
 }
 
 export async function generate(prompt: string): Promise<string> {
-  return getActiveProvider().generate(prompt);
+  if (isGeminiBroken) {
+    return ollamaProvider.generate(prompt);
+  }
+
+  const provider = getActiveProvider();
+  try {
+    return await provider.generate(prompt);
+  } catch (err: any) {
+    if (provider.name !== "ollama" && (err?.message?.includes("503") || err?.message?.includes("429"))) {
+      console.warn(`\n  ⚠  ${provider.name} overloaded. Breaking circuit and permanently falling back to ollama...`);
+      isGeminiBroken = true;
+      return ollamaProvider.generate(prompt);
+    }
+    throw err;
+  }
 }

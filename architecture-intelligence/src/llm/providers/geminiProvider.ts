@@ -50,7 +50,8 @@ Example reply: PostgreSQL`;
 
     try {
       return await geminiPost(userPrompt);
-    } catch (e) {
+    } catch (e: any) {
+      if (e.message?.includes("503") || e.message?.includes("429")) throw e;
       console.warn(`⚠  Gemini call failed for "${key}": ${(e as Error).message}`);
       return "TBD";
     }
@@ -74,7 +75,8 @@ Alternatives: <comma-separated others that would also work>`;
 
     try {
       return await geminiPost(userPrompt);
-    } catch (e) {
+    } catch (e: any) {
+      if (e.message?.includes("503") || e.message?.includes("429")) throw e;
       console.warn(`⚠  Gemini analysis failed for "${key}": ${(e as Error).message}`);
       return `Recommended: ${proposed[0]}\nReason: Gemini unavailable.\nAlternatives: ${proposed.slice(1).join(", ")}`;
     }

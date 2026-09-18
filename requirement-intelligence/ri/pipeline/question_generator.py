@@ -49,12 +49,17 @@ def generate(
         logger.warning("[ri/question_generator] LLM raised exception, falling back: %s", exc)
         return _fallback(gaps), 1
 
-    if raw and isinstance(raw, dict) and "questions" in raw:
-        parsed, ok = _parse(raw["questions"], gaps)
+    if raw and isinstance(raw, dict):
+        q_list = raw.get("questions") or [raw]
+        parsed, ok = _parse(q_list, gaps)
+        if ok:
+            return parsed, 0
+    elif raw and isinstance(raw, list):
+        parsed, ok = _parse(raw, gaps)
         if ok:
             return parsed, 0
 
-    logger.warning("[ri/question_generator] fell back to template defaults")
+    logger.warning("[ri/question_generator] fell back to template defaults. LLM output: %s", raw)
     return _fallback(gaps), 1
 
 
@@ -70,7 +75,7 @@ def _parse(raw_questions: list, gaps: list[GraphNode]) -> tuple[list[Question], 
         node_id = item.get("node_id", "")
         # Reject if node_id not in our gap list (LLM hallucinated a topic)
         if node_id not in valid_node_ids:
-            logger.debug("[ri/question_generator] LLM returned unknown node_id %r, skipping", node_id)
+            logger.warning("[ri/question_generator] LLM returned unknown node_id %r, skipping. Valid: %s", node_id, valid_node_ids)
             continue
         options = item.get("options", [])
         if not isinstance(options, list) or len(options) < 2:
