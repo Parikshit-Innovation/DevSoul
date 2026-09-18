@@ -1,0 +1,24 @@
+# DevSoul Requirements Instance — Demo Project
+# Conforms to: shared/schemas/requirements.schema.yaml  v0.1.0
+# ─────────────────────────────────────────────────────────────
+# This file holds example/seed requirements for the demo project.
+# In production, Requirements Intelligence writes here automatically.
+
+requirements:
+  - id: "10000000-0000-0000-0000-000000000001"
+    project_id: "00000000-0000-0000-0000-000000000001"
+    title: "Add a /health endpoint"
+    description: >
+      The API needs a GET /health endpoint that returns {"status": "ok"}
+      so that the gateway can poll it for liveness.
+    type: feature
+    priority: high
+    status: draft
+    acceptance_criteria:
+      - "GET /health returns HTTP 200"
+      - "Response body is {\"status\": \"ok\"}"
+      - "Endpoint is covered by at least one unit test"
+    linked_files: []
+    agent_assignments: []
+    created_at: "2026-09-18T00:00:00Z"
+    updated_at: "2026-09-18T00:00:00Z"

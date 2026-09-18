@@ -1,0 +1,29 @@
+# DevSoul Agents Instance — Demo Project
+# Conforms to: shared/schemas/agents.schema.yaml  v0.1.0
+# ─────────────────────────────────────────────────────────────
+# Defines which agents are available for this demo project.
+
+agents:
+  - id: "20000000-0000-0000-0000-000000000001"
+    name: "demo-coder"
+    display_name: "Demo Coder Agent"
+    description: >
+      General-purpose coding agent for the demo project.
+      Implements features and fixes bugs.
+    type: coder
+    model:
+      provider: openai
+      name: gpt-4o
+      temperature: 0.2
+      max_tokens: 4096
+    tools:
+      - read_file
+      - write_file
+      - run_tests
+      - search_codebase
+    memory:
+      enabled: true
+      max_context_tokens: 32000
+    policy_refs:
+      - "30000000-0000-0000-0000-000000000001"
+    created_at: "2026-09-18T00:00:00Z"

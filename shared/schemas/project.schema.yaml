@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-07/schema#
+# ─────────────────────────────────────────────────────────────────────────────
+# DevSoul — Project Schema  v0.1.0
+# Describes the top-level metadata for a DevSoul-managed project.
+# ─────────────────────────────────────────────────────────────────────────────
+
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "devosoul/project.schema.yaml"
+title: Project
+description: Top-level metadata for a DevSoul project instance.
+type: object
+
+required:
+  - id
+  - name
+  - version
+  - created_at
+
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique project identifier (UUID v4).
+
+  name:
+    type: string
+    minLength: 1
+    maxLength: 128
+    description: Human-readable project name.
+
+  version:
+    type: string
+    pattern: "^\\d+\\.\\d+\\.\\d+$"
+    description: Semantic version of the project schema instance (e.g. 0.1.0).
+
+  description:
+    type: string
+    description: Short description of what the project does.
+
+  repo_url:
+    type: string
+    format: uri
+    description: Remote VCS URL for this project.
+
+  language:
+    type: string
+    description: Primary programming language (e.g. python, typescript).
+
+  framework:
+    type: string
+    description: Primary framework (e.g. fastapi, nextjs).
+
+  created_at:
+    type: string
+    format: date-time
+
+  updated_at:
+    type: string
+    format: date-time
+
+  tags:
+    type: array
+    items:
+      type: string
+    uniqueItems: true
+
+additionalProperties: false

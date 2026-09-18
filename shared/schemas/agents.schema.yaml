@@ -1,0 +1,95 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-07/schema#
+# ─────────────────────────────────────────────────────────────────────────────
+# DevSoul — Agents Schema  v0.1.0
+# Defines an agent's identity, capabilities, and runtime configuration.
+# ─────────────────────────────────────────────────────────────────────────────
+
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "devosoul/agents.schema.yaml"
+title: Agent
+description: Definition of a DevSoul AI agent.
+type: object
+
+required:
+  - id
+  - name
+  - type
+  - model
+
+properties:
+  id:
+    type: string
+    format: uuid
+
+  name:
+    type: string
+    minLength: 1
+    maxLength: 64
+    description: Short, unique slug for this agent (e.g. code-reviewer, test-writer).
+
+  display_name:
+    type: string
+    description: Human-readable name shown in the UI.
+
+  description:
+    type: string
+
+  type:
+    type: string
+    enum:
+      - planner
+      - coder
+      - reviewer
+      - tester
+      - security
+      - documentation
+      - orchestrator
+      - custom
+
+  model:
+    type: object
+    required: [provider, name]
+    properties:
+      provider:
+        type: string
+        enum: [openai, anthropic, google, local, custom]
+      name:
+        type: string
+        description: Model identifier (e.g. gpt-4o, claude-3-5-sonnet-20241022).
+      temperature:
+        type: number
+        minimum: 0
+        maximum: 2
+        default: 0.2
+      max_tokens:
+        type: integer
+        minimum: 1
+
+  tools:
+    type: array
+    description: List of tool names this agent is permitted to use.
+    items:
+      type: string
+    uniqueItems: true
+
+  memory:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      max_context_tokens:
+        type: integer
+        default: 32000
+
+  policy_refs:
+    type: array
+    description: IDs of Aegis policies that apply to this agent.
+    items:
+      type: string
+
+  created_at:
+    type: string
+    format: date-time
+
+additionalProperties: false

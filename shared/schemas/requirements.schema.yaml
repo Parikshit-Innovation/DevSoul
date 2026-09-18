@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-07/schema#
+# ─────────────────────────────────────────────────────────────────────────────
+# DevSoul — Requirements Schema  v0.1.0
+# Structured representation of a developer requirement / task / feature request.
+# ─────────────────────────────────────────────────────────────────────────────
+
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "devosoul/requirements.schema.yaml"
+title: Requirement
+description: A structured requirement object parsed by Requirement Intelligence.
+type: object
+
+required:
+  - id
+  - project_id
+  - title
+  - status
+  - created_at
+
+properties:
+  id:
+    type: string
+    format: uuid
+
+  project_id:
+    type: string
+    format: uuid
+    description: Reference to the parent project.
+
+  title:
+    type: string
+    minLength: 1
+    maxLength: 256
+
+  description:
+    type: string
+    description: Full natural-language description of the requirement.
+
+  type:
+    type: string
+    enum:
+      - feature
+      - bug
+      - refactor
+      - chore
+      - security
+      - documentation
+    default: feature
+
+  priority:
+    type: string
+    enum: [critical, high, medium, low]
+    default: medium
+
+  status:
+    type: string
+    enum: [draft, analysed, in_progress, review, done, cancelled]
+    default: draft
+
+  acceptance_criteria:
+    type: array
+    description: List of conditions that must be true for this requirement to be complete.
+    items:
+      type: string
+
+  linked_files:
+    type: array
+    description: Relative paths to source files relevant to this requirement.
+    items:
+      type: string
+
+  agent_assignments:
+    type: array
+    description: IDs of agents assigned to fulfill this requirement.
+    items:
+      type: string
+
+  created_at:
+    type: string
+    format: date-time
+
+  updated_at:
+    type: string
+    format: date-time
+
+additionalProperties: false

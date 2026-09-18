@@ -1,0 +1,49 @@
+# DevSoul Policy Instance — Demo Project
+# Conforms to: shared/schemas/policy.schema.yaml  v0.1.0
+# ─────────────────────────────────────────────────────────────
+# Aegis enforces these policies for all agents on this project.
+
+policies:
+  - id: "30000000-0000-0000-0000-000000000001"
+    name: "demo-default-allow"
+    description: >
+      Default development policy for the demo project.
+      Allows agents to read/write within the project directory
+      and run tests, but blocks network calls and agent spawning.
+    version: "0.1.0"
+    effect: allow
+    scope:
+      resource: "filesystem/examples/demo-project/**"
+      actions:
+        - read
+        - write
+        - execute
+    conditions:
+      environment: development
+      require_human_approval: false
+      max_risk_level: medium
+    audit:
+      log_level: info
+      alert_on_violation: true
+    created_at: "2026-09-18T00:00:00Z"
+    updated_at: "2026-09-18T00:00:00Z"
+
+  - id: "30000000-0000-0000-0000-000000000002"
+    name: "demo-deny-network"
+    description: >
+      Deny all outbound network calls from agents in the demo project
+      to prevent unintended data exfiltration.
+    version: "0.1.0"
+    effect: deny
+    scope:
+      resource: "network/**"
+      actions:
+        - network_call
+    conditions:
+      environment: development
+      require_human_approval: false
+    audit:
+      log_level: warn
+      alert_on_violation: true
+    created_at: "2026-09-18T00:00:00Z"
+    updated_at: "2026-09-18T00:00:00Z"

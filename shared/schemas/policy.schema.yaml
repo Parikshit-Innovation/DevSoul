@@ -1,0 +1,96 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-07/schema#
+# ─────────────────────────────────────────────────────────────────────────────
+# DevSoul — Policy Schema  v0.1.0
+# Aegis security policy definitions — govern what agents are allowed to do.
+# ─────────────────────────────────────────────────────────────────────────────
+
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "devosoul/policy.schema.yaml"
+title: Policy
+description: An Aegis security policy that constrains agent behaviour.
+type: object
+
+required:
+  - id
+  - name
+  - effect
+  - scope
+
+properties:
+  id:
+    type: string
+    format: uuid
+
+  name:
+    type: string
+    minLength: 1
+    maxLength: 128
+
+  description:
+    type: string
+
+  version:
+    type: string
+    pattern: "^\\d+\\.\\d+\\.\\d+$"
+    default: "0.1.0"
+
+  effect:
+    type: string
+    enum: [allow, deny]
+    description: Whether this policy allows or denies the specified actions.
+
+  scope:
+    type: object
+    description: What the policy applies to.
+    required: [resource]
+    properties:
+      agent_types:
+        type: array
+        description: Agent types this policy applies to (empty = all).
+        items:
+          type: string
+      resource:
+        type: string
+        description: Resource path or glob pattern (e.g. "filesystem/**", "network/*").
+      actions:
+        type: array
+        description: Actions covered by this policy (e.g. read, write, execute, delete).
+        items:
+          type: string
+          enum: [read, write, execute, delete, network_call, spawn_agent]
+
+  conditions:
+    type: object
+    description: Optional conditions that must be met for the policy to apply.
+    properties:
+      environment:
+        type: string
+        enum: [development, staging, production, any]
+        default: any
+      require_human_approval:
+        type: boolean
+        default: false
+      max_risk_level:
+        type: string
+        enum: [low, medium, high, critical]
+
+  audit:
+    type: object
+    properties:
+      log_level:
+        type: string
+        enum: [none, info, warn, error, all]
+        default: info
+      alert_on_violation:
+        type: boolean
+        default: true
+
+  created_at:
+    type: string
+    format: date-time
+
+  updated_at:
+    type: string
+    format: date-time
+
+additionalProperties: false

@@ -1,0 +1,19 @@
+# DevSoul Project Instance — Demo Project
+# Conforms to: shared/schemas/project.schema.yaml  v0.1.0
+# ─────────────────────────────────────────────────────────────
+
+id: "00000000-0000-0000-0000-000000000001"
+name: "demo-project"
+version: "0.1.0"
+description: >
+  Sample project used to demonstrate the full DevSoul agent workflow
+  during team integration testing.
+repo_url: "https://github.com/your-org/devsoul"
+language: "python"
+framework: "fastapi"
+created_at: "2026-09-18T00:00:00Z"
+updated_at: "2026-09-18T00:00:00Z"
+tags:
+  - demo
+  - devosoul
+  - example
