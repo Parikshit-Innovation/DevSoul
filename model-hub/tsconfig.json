@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": ["../aegis/node_modules/@types", "./node_modules/@types"],
+    "types": ["node"]
+  },
+  "include": ["src/**/*", "tests/**/*", "routing.rules.ts"]
+}

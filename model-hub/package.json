@@ -1,0 +1,31 @@
+{
+  "name": "@devsoul/model-hub",
+  "version": "1.0.0",
+  "description": "Model Hub + Intelligent Privacy-Aware Router for DevOS",
+  "main": "src/index.ts",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "smoke": "node --experimental-strip-types src/smoke.ts",
+    "start": "node --experimental-strip-types src/server.ts",
+    "demo": "node --experimental-strip-types src/demo.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.3",
+    "typescript": "^5.9.3"
+  },
+  "keywords": [
+    "model-hub",
+    "router",
+    "openrouter",
+    "ollama",
+    "privacy",
+    "devos"
+  ],
+  "author": "DevOS Team",
+  "license": "MIT"
+}
